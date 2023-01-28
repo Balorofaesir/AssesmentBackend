@@ -1,5 +1,4 @@
 import { Request, Response, NextFunction } from 'express';
-import Event from './events.model';
 
 import { AuthRequest } from '../../auth/auth.types';
 import {

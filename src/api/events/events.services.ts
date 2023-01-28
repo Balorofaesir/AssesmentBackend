@@ -2,14 +2,17 @@ import { DocumentDefinition, FilterQuery } from "mongoose";
 
 import Event, { EventDocument } from "./events.model";
 
-export function getAllEvents() {
-  return Event.find({})
+export function getAllEventsBycreator(createdBy: string) {
+  console.log({createdBy: createdBy})
+  
+
+  return Event.find({createdBy: createdBy})
+  .populate({ path: 'created By', select: 'Username' })
 }
 
-export function getEventById(id: string) {
-  return Event.findById(id)
+export function getEventById(id: string, createdBy: string ) {
+  return Event.find({_id: id, createdBy: createdBy})
     .populate({ path: 'createdBy', select: 'Username' })
-    .populate({ path: 'owner', select: 'Username' });
     // .populate('createdBy');
 }
 
@@ -31,14 +34,6 @@ export function updateEvent(
   return Event.findByIdAndUpdate(id, event, { new: true });
 }
 
-export function deleteEvent(id: string) {
-  return Event.findByIdAndRemove(id);
+export function deleteEvent(id: string, createdBy: string) {
+  return Event.findOneAndRemove({_id: id, createdBy: createdBy});
 }
-
-// export function deleteEventByname(id: string, userId: string
-//   ) {
-
-//   const deletedUser = Event.findOneAndDelete({_id: id, createdBy: userId});
-    
-//   return deletedUser;
-// }

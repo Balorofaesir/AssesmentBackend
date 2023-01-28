@@ -3,25 +3,36 @@ import Event from './events.model';
 
 import { AuthRequest } from '../../auth/auth.types';
 import {
-  getAllEvents,
+  getAllEventsBycreator,
   getEventById,
   createEvent,
   // updateEvent,
   deleteEvent,
 } from './events.services'
 
-export async function handleAllGetEvents(req: Request, res: Response, next: NextFunction) {
-  const events = await getAllEvents();
-
-  return res.status(200).json(events);
+export async function handleGetAllEventsByCreator(req: AuthRequest, res: Response, next: NextFunction) {
+  const { id } = req.params;
+  const user = req.user;
+  
+  try {
+   const AllEventsByUser = await getAllEventsBycreator(user?._id)
+    if (!AllEventsByUser) {
+      return res.status(404).json({ message: 'Not authorized user' });
+    }
+      return res.status(200).json(AllEventsByUser);
+  } catch (error) {
+      console.log(error);
+      return res.status(500).json(error);
+  }
 }
 
-export async function handleGetEventById(req: Request, res: Response, next: NextFunction) {
+export async function handleGetEventById(req: AuthRequest, res: Response, next: NextFunction) {
   const { id } = req.params;
+  const user = req.user;
 
-  const event = await getEventById(id);
+  const event = await getEventById(id, user?._id);
 
-  if (!event) {
+  if (!event || event.length < 1) {
     return res.status(404).json({ message: 'Event not found' });
   }
 
@@ -36,7 +47,6 @@ export async function handleCreateEvent(req: AuthRequest, res: Response, next: N
       ...data,
       createdBy:user?._id,
   }
-  console.log(data)
     const Newevent = await createEvent(event);
 
     return res.status(201).json(Newevent);
@@ -61,14 +71,14 @@ export async function handleCreateEvent(req: AuthRequest, res: Response, next: N
 export async function handleDeleteEvent(req: AuthRequest, res: Response,  next: NextFunction) {
   const { id } = req.params;
   const user = req.user;
-  const query = { _id: id, createdBy: user?._id}
-  console.log(user?._id)
+  
   try {
-   const delet = await Event.findOneAndDelete(query)
-    if (!delet) {
+   const deleted = await deleteEvent(id, user?._id )
+   console.log("deleted:",deleted)
+    if (!deleted) {
       return res.status(404).json({ message: 'Not authorized user' });
     }
-      return res.status(200).json(delet);
+      return res.status(200).json(deleted);
   } catch (error) {
       console.log(error);
       return res.status(500).json(error);

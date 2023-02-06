@@ -7,16 +7,22 @@ import {
   handleCreateEvent,
   handleDeleteEvent,
   handleGetEventById,
+  handleGetEventBycreatorById,
+  handleAllGetEvents,
   // handleUpdateEvent,
 } from './events.controller';
 
 const router = Router();
 // RESTful API
 
+// GET /api/events/all
+router.get('/all', handleAllGetEvents);
 // GET /api/events
 router.get('/',isAuthenticated, handleGetAllEventsByCreator);
+// GET /api/events/all/:id
+router.get('/all/:id', handleGetEventById);
 // GET /api/events/:id
-router.get('/:id',isAuthenticated, handleGetEventById);
+router.get('/:id',isAuthenticated, handleGetEventBycreatorById);
 // POST /api/events
 router.post('/', isAuthenticated, handleCreateEvent);
 // PATCH /api/events/:id

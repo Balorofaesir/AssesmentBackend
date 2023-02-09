@@ -4,16 +4,21 @@ import Event, { EventDocument } from "./events.model";
 
 export function getAllEventsBycreator(createdBy: string) {
   console.log({createdBy: createdBy})
-  
-
-  return Event.find({createdBy: createdBy})
+    return Event.find({createdBy: createdBy})
   .populate({ path: 'created By', select: 'Username' })
 }
 
-export function getEventById(id: string, createdBy: string ) {
+export function getAllEvents() {
+    return Event.find({})
+}
+
+export function getEventBycreatorById(id: string, createdBy: string ) {
   return Event.find({_id: id, createdBy: createdBy})
     .populate({ path: 'createdBy', select: 'Username' })
-    // .populate('createdBy');
+}
+export function getEventById(id: string) {
+  const event = Event.findById(id);
+  return event;
 }
 
 export async function searchEvent(filter?: FilterQuery<EventDocument>) {

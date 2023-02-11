@@ -8,6 +8,7 @@ export interface EventDocument extends Document {
   city: string,
   owner: string;
   createdBy: string;
+  file: string;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -32,6 +33,10 @@ const EventSchema = new Schema({
   city: {
     type: String,
     required: true,
+  },
+  file: {
+    type:String,
+    required:false,
   },
   createdBy: {
     type: Schema.Types.ObjectId,

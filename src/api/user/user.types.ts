@@ -1,5 +1,6 @@
 export type userProfileType = {
-  userName: string;
-  email: string;
-  role: string;
+  userName: String;
+  email: String;
+  role: String;
+  id:String;  
 }

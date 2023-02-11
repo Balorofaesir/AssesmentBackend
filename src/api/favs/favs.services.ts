@@ -6,7 +6,7 @@ export function getAllFavsBycreator(createdBy: string) {
   console.log({ createdBy: createdBy });
 
   return Fav.find({ createdBy: createdBy }).populate({
-    path: "created By",
+    path: "createdBy",
     select: "Username",
   });
 }

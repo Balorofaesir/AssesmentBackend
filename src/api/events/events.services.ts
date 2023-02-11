@@ -5,7 +5,7 @@ import Event, { EventDocument } from "./events.model";
 export function getAllEventsBycreator(createdBy: string) {
   console.log({createdBy: createdBy})
     return Event.find({createdBy: createdBy})
-  .populate({ path: 'created By', select: 'Username' })
+  .populate({ path: 'createdBy', select: 'Username' })
 }
 
 export function getAllEvents() {

@@ -1,4 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
+import { AuthRequest } from "../../auth/auth.types";
 
 import {
   getAllUsers,
@@ -14,6 +15,28 @@ export async function handleAllGetUsers(req: Request, res: Response, next: NextF
     return res.status(200).json(users);
   } catch (error) {
     console.log("🚀 handleAllGetUsers ~ error", error)
+    return res.status(500).json(error);
+  }
+}
+
+export async function handleGetMe(
+  req: AuthRequest,
+  res: Response,
+  next: NextFunction
+) {
+  const id = req.user?._id;
+  console.log("id:",id)
+  try {
+    const user = await getUserById(id);
+    // TODO: Search all info about user
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    return res.status(200).json(user);
+  } catch (error) {
+    console.error(error);
     return res.status(500).json(error);
   }
 }

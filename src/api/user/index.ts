@@ -24,7 +24,7 @@ router.get('/me', isAuthenticated, handleGetMe);
 // POST /api/users
 router.post('/', handleCreateUser);
 // PATCH /api/users/:id
-router.patch('/:id', isAuthenticated, handleUpdateUser);
+router.patch('/edit/:id', handleUpdateUser);
 // DELETE /api/users/:id
 router.delete('/:id', isAuthenticated, handleDeleteUser);
 
